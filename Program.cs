@@ -1,4 +1,5 @@
-﻿bool sair = false;
+﻿using Tarefas.db;
+bool sair = false;
 while (!sair)
 {
     string opcao = UI.SelecionaOpcaoEmMenu();
@@ -31,6 +32,20 @@ void ListarTodasAsTarefas()
 {
     UI.ExibeDestaque("\n-- Listar todas as Tarefas ---");
     // Continue daqui
+    using (var _db = new tarefasContext()){
+
+        var todasTarefas = _db.Tarefa.ToList<Tarefa>();
+
+        int quantidadeRegistros  = todasTarefas.Count();
+        Console.WriteLine($"Encontrada(s) {quantidadeRegistros} tarefas");
+
+        foreach (var tarefa in todasTarefas)
+        {
+
+            string concluida = tarefa.Concluida ? ":-)" : ":-(";
+            Console.WriteLine($"[{concluida}] número = {tarefa.Id} => {tarefa.Descricao}");
+        }
+    }
 }
 
 void ListarTarefasPendentes()
